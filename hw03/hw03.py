@@ -147,7 +147,7 @@ def filtered_accumulate(combiner, base, pred, n, term):
     """
     def combine_if(x, y):
         "*** YOUR CODE HERE ***"
-        if pred(y):
+        if pred(y): # 如果pred(y)返回true的话，计算数里就包含y否则不包含
             return combiner(x,y)
         else:
             return x
@@ -176,7 +176,7 @@ def make_repeater(f, n):
     """
     "*** YOUR CODE HERE ***"
     def func(x):
-        for i in range(n):
+        for i in range(n): # n有多少个，则相应的对x进行n次f操作
             x =  f(x)
         return x
     return func
@@ -234,7 +234,6 @@ def add_church(m, n):
     >>> church_to_int(add_church(two, three))
     5
     """
-    "*** YOUR CODE HERE ***"
     return lambda f: lambda x: m(f)(n(f)(x))
 
 def mul_church(m, n):
@@ -258,3 +257,4 @@ def pow_church(m, n):
     9
     """
     "*** YOUR CODE HERE ***"
+    return lambda m: lambda n: n( m )
