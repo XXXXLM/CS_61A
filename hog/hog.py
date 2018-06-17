@@ -121,25 +121,18 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     """
     player = 0  # Which player is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
-    while True:
+    while score1 < goal and score0 < goal:
         if player == 0:
             score0 = score0 + take_turn(strategy0(score0,score1),score1,dice)
             if is_swap(score0,score1):
                 score0,score1 = score1,score0
-            if score1 >= goal or score0>=goal:
-                say = say(score0, score1)
-                break
-            say = say(score0, score1)
             player = other(player)
         else:
             score1 = score1 + take_turn(strategy1(score1,score0),score0,dice)
             if is_swap(score1, score0):
                 score0, score1 = score1, score0
-            if score1 >= goal or score0 >= goal:
-                say = say(score0, score1)
-                break
-            say = say(score0, score1)
             player = other(player)
+        say = say(score0, score1)
     return score0,score1
     # END PROBLEM 5
 
@@ -215,14 +208,9 @@ def announce_highest(who, previous_high=0, previous_score=0):
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
     def say(score0,score1):
-        if who == 0:
-            score = score0
-        else:
-            score = score1
+        score = score0 if who == 0 else score1
         gain = score - previous_score # 本回合得到的分数
-        point = 'points'
-        if gain == 1: # 如果得到的分数为1，是point
-            point = 'point'
+        point = 'point' if gain == 1 else 'points'
         high = previous_high
         if gain > high: #如果本次的涨幅大于之前的涨幅，最高的涨幅等于这次的涨幅
             high = gain
@@ -267,6 +255,7 @@ def make_averaged(fn, num_samples=1000):
     >>> averaged_dice = make_averaged(dice, 1000)
     >>> averaged_dice()
     3.0
+    计算调用1000次dice()的平均值
     """
     # BEGIN PROBLEM 8
     def averaged_fu(*args):
@@ -287,6 +276,7 @@ def max_scoring_num_rolls(dice=six_sided, num_samples=1000):
     >>> dice = make_test_dice(1, 6)
     >>> max_scoring_num_rolls(dice)
     1
+    计算选择1-10个骰子中对自己得到分数平均数最大的数量
     """
     # BEGIN PROBLEM 9
     max_average,max_no = 0,0
@@ -355,9 +345,8 @@ def swap_strategy(score, opponent_score, margin=8, num_rolls=4):
     NUM_ROLLS.
     """
     # BEGIN PROBLEM 11
-    return 0 if abs(
-        opponent_score // 10 - opponent_score % 10
-    ) + 2 >= margin or is_swap(score, opponent_score) else num_rolls
+    return 0 if bacon_strategy(score, opponent_score, margin=8, num_rolls=4)==0 or (
+        is_swap(score, opponent_score) and score<=opponent_score) else num_rolls
     # END PROBLEM 11
 
 

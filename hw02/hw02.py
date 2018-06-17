@@ -34,13 +34,10 @@ def product(n, term):
     """
     "*** YOUR CODE HERE ***"
     assert n >= 0
-    factorail = 1
-    if term(n) == 0:
-        factorail = 1
+    if n == 0:
+        return 1
     else:
-        for i in range(1, n + 1):
-            factorail = factorail * term(i)
-    return factorail
+        return term(n)* product(n-1,term)
 
 # The identity function, defined using a lambda expression!
 identity = lambda k: k

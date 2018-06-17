@@ -86,10 +86,11 @@ def accumulate(combiner, base, n, term):
     72
     """
     "*** YOUR CODE HERE ***"
-    result = base
-    for i in range(1, n + 1):
-        result = combiner(result, term(i))
-    return result
+    if n == 0:
+        return base
+    else:
+        base = combiner(base, term(n))
+        return accumulate(combiner,base, n-1,term)
 
 def summation_using_accumulate(n, term):
     """Returns the sum of term(1) + ... + term(n). The implementation
